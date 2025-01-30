@@ -21,6 +21,7 @@ import {
 import Image from "next/image";
 import { useState } from 'react';
 import { Code2, Brain, BarChart2, Book, ArrowRight, Github, Twitter, Linkedin, Menu, X, ChevronRight } from 'lucide-react';
+import Link from "next/link";
 
 const HomePage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -308,9 +309,9 @@ const HomePage = () => {
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-8">Ready to Master DSA?</h2>
           <p className="text-xl mb-8 text-gray-100">Join thousands of developers who've improved their coding skills with AlgoEase</p>
-          <button className="bg-white text-blue-600 px-8 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors duration-200 transform hover:scale-105">
+          <Link href='/signup'><button className="bg-white text-blue-600 px-8 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors duration-200 transform hover:scale-105">
             Start Learning Now
-          </button>
+          </button></Link>
         </div>
       </section>
 
