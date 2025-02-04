@@ -13,7 +13,7 @@ dotenv.config();
 
 console.log("Hello! This is the generate-roadmap route page.");
 
-// const apiKey = "AIzaSyAiQJVjerSMjRLOYal8vIQJfXmwm6uEgXc"; // Fetch API key from environment variables
+const apiKey = "AIzaSyAiQJVjerSMjRLOYal8vIQJfXmwm6uEgXc"; // Fetch API key from environment variables
 if (!apiKey) {
   throw new Error("GEMINI_API_KEY is missing from environment variables.");
 }

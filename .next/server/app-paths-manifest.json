@@ -1,8 +1,10 @@
 {
   "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/api/get-roadmap/route": "app/api/get-roadmap/route.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/login/page": "app/login/page.js",
-  "/page": "app/page.js",
   "/signup/page": "app/signup/page.js",
-  "/dashboard/page": "app/dashboard/page.js"
+  "/code-analyzer/page": "app/code-analyzer/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/login/page": "app/login/page.js",
+  "/learning-path/page": "app/learning-path/page.js"
 }

@@ -23,6 +23,7 @@ const Signup = () => {
   });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingRoadmap, setIsLoadingRoadmap] = useState(false);
   const [apiError, setApiError] = useState('');
   const [roadmap, setRoadmap] = useState(null);
 
@@ -112,7 +113,7 @@ const Signup = () => {
 
 
   const handleGenerateRoadmap = async (userId) => {
-    setIsLoading(true);
+    setIsLoadingRoadmap(true);
     console.log("accessing handleGenerteRoadmap function")
     
     setApiError("");
@@ -128,7 +129,7 @@ const Signup = () => {
   
       if (response.ok) {
         setRoadmap(data.roadmap.content);
-        setIsLoading(false);
+        setIsLoadingRoadmap(false);
         setStep(3); // Show roadmap step
       } else {
         setApiError(data.message);
@@ -137,13 +138,13 @@ const Signup = () => {
       setApiError("An error occurred. Try again.");
     }
   
-    setIsLoading(false);
+    setIsLoadingRoadmap(false);
   };
   
 
 
   const handleFinalSubmit = async (e) => {
-    
+    console.log("accessing handle final submit ")
     e.preventDefault();
     setIsLoading(true);
     try {
@@ -479,10 +480,9 @@ const Signup = () => {
 
         <button
           onClick={(e) => handleFinalSubmit(e)}
-          disabled={isLoading}
           className="flex items-center px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
         >
-          {isLoading ? 'Generating Roadmap...' : 'Generate Roadmap'}
+          {isLoadingRoadmap ? 'Generating Roadmap...' : 'Generate Roadmap'}
           <ChevronRight className="ml-2 w-4 h-4" />
         </button>
       </div>
