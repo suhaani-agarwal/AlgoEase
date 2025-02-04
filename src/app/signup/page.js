@@ -24,6 +24,8 @@ const Signup = () => {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState('');
+  const [roadmap, setRoadmap] = useState(null);
+
 
   const StepIndicator = () => (
     <div className="flex items-center justify-center mb-8">
@@ -81,7 +83,7 @@ const Signup = () => {
     if (!validateForm()) {
       return;
     }
-    
+
 
     setIsLoading(true);
 
@@ -91,15 +93,15 @@ const Signup = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: formData.email, username: formData.username }),
       });
-  
+
       const data = await response.json();
-  
+
       if (!response.ok) {
         setApiError(data.message || 'Something went wrong');
         setIsLoading(false);
         return;  // Stop here if user exists
       }
-  
+
       setStep(2);  // Move only if user does NOT exist
     } catch (error) {
       setApiError('An error occurred. Try again later.');
@@ -109,8 +111,41 @@ const Signup = () => {
   };
 
 
+  const handleGenerateRoadmap = async (userId) => {
+    setIsLoading(true);
+    console.log("accessing handleGenerteRoadmap function")
+    
+    setApiError("");
+    try {
+      const response = await fetch("/api/generate-roadmap", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId }),
+      });
+  
+      const data = await response.json();
+      console.log("this is the data fetched : ",data);
+  
+      if (response.ok) {
+        setRoadmap(data.roadmap.content);
+        setIsLoading(false);
+        setStep(3); // Show roadmap step
+      } else {
+        setApiError(data.message);
+      }
+    } catch (error) {
+      setApiError("An error occurred. Try again.");
+    }
+  
+    setIsLoading(false);
+  };
+  
+
+
   const handleFinalSubmit = async (e) => {
+    
     e.preventDefault();
+    setIsLoading(true);
     try {
       const response = await fetch('/api/user', {
         method: 'POST',
@@ -120,7 +155,7 @@ const Signup = () => {
           email: formData.email,
           password: formData.password,
           experienceLevel: formData.experience,
-          level:formData.level,
+          level: formData.level,
           goals: formData.goals,
           learningStyle: formData.learningStyle,
           timeCommitment: formData.timeCommitment
@@ -128,9 +163,10 @@ const Signup = () => {
       });
       const data = await response.json();
       if (response.ok) {
-        setStep(3)
-        console.log(formData)
-        // router.push('/dashboard');
+        console.log("User created:", data.user);
+        await handleGenerateRoadmap(data.user.id); // Pass new userId
+        setStep(3);
+        
       }
       else {
         setApiError(data.message || 'Signup failed. Try again.');
@@ -139,10 +175,12 @@ const Signup = () => {
     } catch (error) {
       setApiError('An error occurred. Try again later.');
       console.log(formData)
+    }finally{
+      setIsLoading(false);
     }
   };
 
-  
+
   const [inputValueUsername, setInputValueUsername] = useState("");
   const [inputValueEmail, setInputValueEmail] = useState("");
   const [inputValuePass, setInputValuePass] = useState("");
@@ -225,6 +263,10 @@ const Signup = () => {
         : [...prev.goals, goalId]
     }));
   };
+
+
+  
+
 
 
   const SignupStep = () => (
@@ -314,14 +356,14 @@ const Signup = () => {
             disabled={isLoading}
             className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isLoading ? 'Signing up...' : 'Sign Up'}
+            {isLoading ? 'Moving to next...' : 'Next'}
             <ChevronRight className="ml-2 w-4 h-4" />
           </button>
         </form>
         <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-white text-gray-500">Already have an account? </span>
-            <div><Link href=""><button>Log In</button></Link></div>
-          </div>
+          <span className="px-2 bg-white text-gray-500">Already have an account? </span>
+          <div><Link href="/login"><button>Log In</button></Link></div>
+        </div>
       </div>
     </div>
   );
@@ -342,8 +384,8 @@ const Signup = () => {
                 key={level}
                 onClick={() => setFormData({ ...formData, level })}
                 className={`px-4 py-2 rounded-md text-sm ${formData.level === level
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   } transition-colors`}
               >
                 {level}
@@ -360,8 +402,8 @@ const Signup = () => {
                 key={goal.id}
                 onClick={() => handleGoalToggle(goal.id)}
                 className={`px-4 py-3 rounded-md text-sm flex items-center ${formData.goals.includes(goal.id)
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   } transition-colors`}
               >
                 <Target className="w-4 h-4 mr-2" />
@@ -379,8 +421,8 @@ const Signup = () => {
                 key={style}
                 onClick={() => setFormData({ ...formData, learningStyle: style })}
                 className={`px-4 py-3 rounded-md text-sm ${formData.learningStyle === style
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   } transition-colors`}
               >
                 {style}
@@ -397,8 +439,8 @@ const Signup = () => {
                 key={exp}
                 onClick={() => setFormData({ ...formData, experience: exp })}
                 className={`px-4 py-2 rounded-md text-sm ${formData.experience === exp
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   } transition-colors`}
               >
                 {exp}
@@ -415,8 +457,8 @@ const Signup = () => {
                 key={time}
                 onClick={() => setFormData({ ...formData, timeCommitment: time })}
                 className={`px-4 py-2 rounded-md text-sm ${formData.timeCommitment === time
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   } transition-colors`}
               >
                 {time}
@@ -437,104 +479,134 @@ const Signup = () => {
 
         <button
           onClick={(e) => handleFinalSubmit(e)}
+          disabled={isLoading}
           className="flex items-center px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
         >
-          Generate Roadmap
+          {isLoading ? 'Generating Roadmap...' : 'Generate Roadmap'}
           <ChevronRight className="ml-2 w-4 h-4" />
         </button>
       </div>
     </div>
   );
 
-
-  const RoadmapStep = () => (
-    <div className="max-w-4xl w-full space-y-6 p-8 bg-white rounded-lg shadow-lg">
-      <div className="text-center">
-        <h2 className="text-3xl font-bold text-gray-900">Your Learning Roadmap</h2>
-        <p className="mt-2 text-gray-600">Personalized path based on your preferences</p>
+  
+  const RoadmapStep = () => {
+    if (!roadmap) return (
+      <div className="flex items-center justify-center p-8">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
       </div>
-
-      <div className="space-y-8">
-        <div className="border border-gray-200 rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-            <Book className="w-5 h-5 mr-2 text-blue-600" />
-            Recommended Path
-          </h3>
+    );
+  
+    return (
+      <div className="max-w-4xl w-full space-y-8 p-8 bg-white rounded-lg shadow-lg">
+        {/* Header Section */}
+        <div className="text-center border-b pb-6">
+          <h2 className="text-3xl font-bold text-gray-900">Your Learning Roadmap</h2>
+          <p className="mt-2 text-gray-600">Welcome {formData.username}! Here's your personalized DSA learning journey.</p>
+        </div>
+  
+        {/* User Info Cards */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div className="bg-blue-50 p-4 rounded-lg">
+            <h3 className="text-sm font-medium text-blue-900">Current Level</h3>
+            <p className="text-lg font-semibold text-blue-700">{formData.level}</p>
+          </div>
+          <div className="bg-purple-50 p-4 rounded-lg">
+            <h3 className="text-sm font-medium text-purple-900">Experience</h3>
+            <p className="text-lg font-semibold text-purple-700">{formData.experience}</p>
+          </div>
+          <div className="bg-green-50 p-4 rounded-lg">
+            <h3 className="text-sm font-medium text-green-900">Time Commitment</h3>
+            <p className="text-lg font-semibold text-green-700">{formData.timeCommitment}</p>
+          </div>
+        </div>
+  
+        {/* Introduction & Expected Outcome */}
+        <div className="bg-gray-50 p-6 rounded-lg space-y-4">
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+              <Book className="w-5 h-5 mr-2 text-blue-600" />
+              Introduction
+            </h3>
+            <p className="mt-2 text-gray-600">{roadmap.split('\n')[0]}</p>
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+              <Target className="w-5 h-5 mr-2 text-blue-600" />
+              Expected Outcome
+            </h3>
+            <p className="mt-2 text-gray-600">{roadmap.split('\n')[1]}</p>
+          </div>
+        </div>
+  
+        {/* Roadmap Steps */}
+        <div className="space-y-4">
+          <h3 className="text-xl font-semibold text-gray-900">Learning Path</h3>
           <div className="space-y-4">
-            <div className="flex items-center">
-              <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center">1</div>
-              <div className="ml-4">
-                <h4 className="font-medium">Foundations of Programming</h4>
-                <p className="text-sm text-gray-600">Basic syntax, variables, control structures</p>
-              </div>
-            </div>
-            <div className="flex items-center">
-              <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center">2</div>
-              <div className="ml-4">
-                <h4 className="font-medium">Data Structures Basics</h4>
-                <p className="text-sm text-gray-600">Arrays, strings, linked lists</p>
-              </div>
-            </div>
-            <div className="flex items-center">
-              <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center">3</div>
-              <div className="ml-4">
-                <h4 className="font-medium">Basic Algorithms</h4>
-                <p className="text-sm text-gray-600">Sorting, searching, basic problem-solving</p>
-              </div>
-            </div>
+            {roadmap.split('Step ').slice(1).map((step, index) => {
+              const [title, ...content] = step.split('\n').filter(Boolean);
+              return (
+                <div key={index} className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
+                  <div className="flex items-start space-x-4">
+                    <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center flex-shrink-0">
+                      {index + 1}
+                    </div>
+                    <div className="flex-1 space-y-3">
+                      <h4 className="text-lg font-semibold text-gray-900">{title.replace(/^[:\s]+/, '')}</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <p className="text-sm font-medium text-gray-500">Description</p>
+                          <p className="text-gray-700">{content[0]}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-gray-500">Time Estimate</p>
+                          <p className="text-gray-700">{content[1]}</p>
+                        </div>
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-gray-500">Resources & Tools</p>
+                        <div className="mt-1 flex flex-wrap gap-2">
+                          {content[2]?.split(',').map((resource, idx) => (
+                            <span key={idx} className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                              {resource.trim()}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="border border-gray-200 rounded-lg p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-              <Clock className="w-5 h-5 mr-2 text-blue-600" />
-              Estimated Timeline
-            </h3>
-            <p className="text-gray-600">3-4 months to complete basic track</p>
-          </div>
-
-          <div className="border border-gray-200 rounded-lg p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-              <Code2 className="w-5 h-5 mr-2 text-blue-600" />
-              Practice Problems
-            </h3>
-            <p className="text-gray-600">50+ curated problems to solve</p>
-          </div>
-
-          <div className="border border-gray-200 rounded-lg p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-              <Sparkles className="w-5 h-5 mr-2 text-blue-600" />
-              Key Milestones
-            </h3>
-            <p className="text-gray-600">15 achievement badges to earn</p>
-          </div>
+  
+        {/* Navigation Buttons */}
+        <div className="flex justify-between pt-6">
+          <button
+            onClick={() => setStep(2)}
+            className="flex items-center px-4 py-2 text-gray-600 hover:text-gray-900 transition-colors"
+          >
+            <ChevronLeft className="w-4 h-4 mr-2" />
+            Back
+          </button>
+  
+          <Link href="/dashboard">
+            <button className="flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg">
+              Start Learning
+              <ChevronRight className="ml-2 w-4 h-4" />
+            </button>
+          </Link>
         </div>
       </div>
-
-      <div className="flex justify-between pt-6">
-        <button
-          onClick={() => setStep(2)}
-          className="flex items-center px-4 py-2 text-gray-600 hover:text-gray-900 transition-colors"
-        >
-          <ChevronLeft className="w-4 h-4 mr-2" />
-          Back
-        </button>
-
-        <Link href='/dashboard'><button
-          className="flex items-center px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-        >
-          Go to Dashboard
-          <ChevronRight className="ml-2 w-4 h-4" />
-        </button></Link>
-      </div>
-    </div>
-  );
+    );
+  };
 
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
       <StepIndicator />
+      
       {step === 1 && <SignupStep />}
       {step === 2 && <PersonalizationStep />}
       {step === 3 && <RoadmapStep />}

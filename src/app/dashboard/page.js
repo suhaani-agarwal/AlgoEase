@@ -1,236 +1,975 @@
-'use client'
-import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+
+// "use client"
+// import React, { useState, useEffect } from 'react';
+// import { 
+//   Card, 
+//   CardContent, 
+//   CardHeader, 
+//   CardTitle,
+//   CardFooter
+// } from "@/components/ui/card";
+// import { 
+//   Dialog, 
+//   DialogContent, 
+//   DialogHeader, 
+//   DialogTitle, 
+//   DialogTrigger,
+//   DialogDescription
+// } from "@/components/ui/dialog";
+// import { FaGithub, FaCode, FaChartLine } from 'react-icons/fa';
+// import { Badge } from "@/components/ui/badge";
+// import { Button } from "@/components/ui/button";
+// import { Progress } from "@/components/ui/progress";
+// import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+// import { 
+//   Moon, 
+//   Sun, 
+//   User, 
+//   LogOut, 
+//   Code, 
+//   Target, 
+//   Trophy, 
+//   Settings, 
+//   Bell, 
+//   GitHub, 
+//   Book, 
+//   MessageCircle, 
+//   Video, 
+//   Calendar,
+//   ExternalLink,
+//   PlusCircle
+// } from 'lucide-react';
+
+// import { useSession, signOut } from "next-auth/react";
+// import { useRouter } from "next/navigation";
+
+// const algoEaseDashboard = () => {
+//   const [isDarkMode, setIsDarkMode] = useState(true);
+//   const [notificationSettings, setNotificationSettings] = useState({
+//     dailyChallenge: true,
+//     weeklyGoals: true,
+//     newResources: true
+//   });
+
+//   const { data: session, status } = useSession();
+//   const router = useRouter();
+
+//   useEffect(() => {
+//     if (status === "unauthenticated") {
+//       router.push("/login");
+//     }
+//   }, [status, router]);
+
+//   if (status === "loading") return <p>Loading...</p>;
+//   if (!session) return null;
+
+//   // Sample data - would be replaced with actual API calls
+//   const learningPath = [
+//     { 
+//       title: "Advanced Sorting Algorithms", 
+//       progress: 65, 
+//       difficulty: "Intermediate",
+//       nextStep: "Implement QuickSort Optimization"
+//     },
+//     { 
+//       title: "Graph Traversal Techniques", 
+//       progress: 40, 
+//       difficulty: "Advanced",
+//       nextStep: "Study Dijkstra's Algorithm"
+//     }
+//   ];
+
+//   const codeChallenges = [
+//     {
+//       title: "Implement Quick Sort",
+//       difficulty: "Medium",
+//       timeRemaining: "23:45:12",
+//       points: 150
+//     }
+//   ];
+
+//   const upcomingEvents = [
+//     {
+//       title: "DSA Hackathon",
+//       date: "March 15, 2024",
+//       type: "Competition"
+//     },
+//     {
+//       title: "Advanced Algorithms Webinar",
+//       date: "March 22, 2024",
+//       type: "Workshop"
+//     }
+//   ];
+
+//   const UserProfileDialog = () => (
+//     <Dialog>
+//       <DialogTrigger>
+//         <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-blue-700 transition-colors">
+//           {session.user?.name?.[0].toUpperCase()}
+//         </div>
+//       </DialogTrigger>
+//       <DialogContent className={`${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white'}`}>
+//         <DialogHeader>
+//           <DialogTitle>User Profile</DialogTitle>
+//           <DialogDescription>Manage your profile and settings</DialogDescription>
+//         </DialogHeader>
+//         <div className="space-y-4">
+//           <div className="flex items-center space-x-4">
+//             <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white text-2xl">
+//               {session.user?.name?.[0].toUpperCase()}
+//             </div>
+//             <div>
+//               <h2 className="text-xl font-bold">{session.user?.name}</h2>
+//               <p className="text-muted-foreground">{session.user?.email}</p>
+//             </div>
+//           </div>
+          
+//           {/* Notification Settings moved here */}
+//           <div className="mt-4">
+//             <h3 className="text-lg font-semibold mb-3 flex items-center">
+//               <Settings className="mr-2" /> Notification Preferences
+//             </h3>
+//             <div className="space-y-3">
+//               {Object.entries(notificationSettings).map(([key, value]) => (
+//                 <div key={key} className="flex justify-between items-center">
+//                   <span>{key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}</span>
+//                   <Button
+//                     variant={value ? "default" : "outline"}
+//                     onClick={() => setNotificationSettings(prev => ({
+//                       ...prev,
+//                       [key]: !value
+//                     }))}
+//                   >
+//                     {value ? "Enabled" : "Disabled"}
+//                   </Button>
+//                 </div>
+//               ))}
+//             </div>
+//           </div>
+//         </div>
+//       </DialogContent>
+//     </Dialog>
+//   );
+
+//   return (
+//     <div className={`min-h-screen p-6 ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-gray-50'}`}>
+//       {/* Header */}
+//       <header className="flex justify-between items-center mb-8 border-b border-gray-700 pb-4">
+//         <div className="flex items-center space-x-4">
+//           <UserProfileDialog />
+//           <h1 className={`text-2xl font-bold ${isDarkMode ? 'text-blue-400' : 'text-blue-600'}`}>
+//             Welcome, {session.user?.name}!
+//           </h1>
+//         </div>
+//         <div className="flex items-center space-x-4">
+//           <Button 
+//             variant="outline" 
+//             size="icon" 
+//             onClick={() => setIsDarkMode(!isDarkMode)}
+//             className={`${isDarkMode ? 'bg-gray-700 text-white' : 'bg-white text-black'}`}
+//           >
+//             {isDarkMode ? <Sun /> : <Moon />}
+//           </Button>
+//           <Button 
+//             variant="destructive" 
+//             onClick={() => signOut()}
+//             className="bg-red-600 hover:bg-red-700"
+//           >
+//             <LogOut className="mr-2" /> Logout
+//           </Button>
+//         </div>
+//       </header>
+
+//       {/* Main Dashboard Grid */}
+//       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+//         {/* Learning Path */}
+//         <Card className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white'}`}>
+//           <CardHeader>
+//             <CardTitle className="flex items-center justify-between">
+//               <div className="flex items-center">
+//                 <Target className="mr-2 text-blue-400" /> 
+//                 <span>Learning Roadmap</span>
+//               </div>
+//               <Button variant="ghost" size="icon" onClick={() => router.push('/learning-path')}>
+//                 <ExternalLink className="h-4 w-4" />
+//               </Button>
+//             </CardTitle>
+//           </CardHeader>
+//           <CardContent>
+//             {learningPath.map((path, index) => (
+//               <div key={index} className="mb-4">
+//                 <div className="flex justify-between mb-2">
+//                   <span>{path.title}</span>
+//                   <Badge variant="secondary">{path.difficulty}</Badge>
+//                 </div>
+//                 <Progress value={path.progress} className="bg-gray-600" />
+//                 <p className="text-sm text-muted-foreground mt-2">
+//                   Next Step: {path.nextStep}
+//                 </p>
+//               </div>
+//             ))}
+//           </CardContent>
+//           <CardFooter>
+//             <Button 
+//               variant="outline" 
+//               className="w-full"
+//               onClick={() => router.push('/learning-path')}
+//             >
+//               Explore Full Roadmap
+//             </Button>
+//           </CardFooter>
+//         </Card>
+
+//         {/* Code Challenges */}
+//         <Card className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white'}`}>
+//           <CardHeader>
+//             <CardTitle className="flex items-center justify-between">
+//               <div className="flex items-center">
+//                 <Code className="mr-2 text-green-400" /> 
+//                 <span>Coding Challenges</span>
+//               </div>
+//               <Button variant="ghost" size="icon" onClick={() => router.push('/challenges')}>
+//                 <ExternalLink className="h-4 w-4" />
+//               </Button>
+//             </CardTitle>
+//           </CardHeader>
+//           <CardContent>
+//             {codeChallenges.map((challenge, index) => (
+//               <div key={index} className="space-y-3">
+//                 <h3>{challenge.title}</h3>
+//                 <div className="flex justify-between">
+//                   <Badge variant="secondary">{challenge.difficulty}</Badge>
+//                   <Badge>{challenge.timeRemaining}</Badge>
+//                 </div>
+//                 <Button className="w-full" variant="outline">Start Challenge</Button>
+//               </div>
+//             ))}
+//           </CardContent>
+//           <CardFooter>
+//             <Button 
+//               variant="outline" 
+//               className="w-full"
+//               onClick={() => router.push('/challenges')}
+//             >
+//               View All Challenges
+//             </Button>
+//           </CardFooter>
+//         </Card>
+
+//         {/* Upcoming Events */}
+//         <Card className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white'}`}>
+//           <CardHeader>
+//             <CardTitle className="flex items-center justify-between">
+//               <div className="flex items-center">
+//                 <Calendar className="mr-2 text-purple-400" /> 
+//                 <span>Upcoming Events</span>
+//               </div>
+//               <Button variant="ghost" size="icon" onClick={() => router.push('/events')}>
+//                 <ExternalLink className="h-4 w-4" />
+//               </Button>
+//             </CardTitle>
+//           </CardHeader>
+//           <CardContent>
+//             {upcomingEvents.map((event, index) => (
+//               <div key={index} className="flex justify-between items-center mb-3">
+//                 <div>
+//                   <h4>{event.title}</h4>
+//                   <p className="text-sm text-muted-foreground">{event.date}</p>
+//                 </div>
+//                 <Badge variant="outline">{event.type}</Badge>
+//               </div>
+//             ))}
+//           </CardContent>
+//           <CardFooter>
+//             <Button 
+//               variant="outline" 
+//               className="w-full"
+//               onClick={() => router.push('/events')}
+//             >
+//               View All Events
+//             </Button>
+//           </CardFooter>
+//         </Card>
+//       </div>
+
+//       {/* Additional Sections */}
+//       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+//         {/* Code Analyzer */}
+//         <Card className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white'}`}>
+//           <CardHeader>
+//             <CardTitle className="flex items-center justify-between">
+//               <div className="flex items-center">
+//                 <FaCode className="mr-2 text-cyan-400" /> 
+//                 <span>Code Analyzer</span>
+//               </div>
+//               <Button variant="ghost" size="icon" onClick={() => router.push('/code-analyzer')}>
+//                 <ExternalLink className="h-4 w-4" />
+//               </Button>
+//             </CardTitle>
+//           </CardHeader>
+//           <CardContent>
+//             <p className="text-muted-foreground mb-4">
+//               Visualize and understand complex algorithms through animated explanations.
+//             </p>
+//             <Button 
+//               className="w-full" 
+//               variant="outline"
+//               onClick={() => router.push('/code-analyzer')}
+//             >
+//               <PlusCircle className="mr-2" /> Analyze Algorithm
+//             </Button>
+//           </CardContent>
+//         </Card>
+
+//         {/* External Integrations */}
+//         <Card className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white'}`}>
+//           <CardHeader>
+//             <CardTitle className="flex items-center justify-between">
+//               <div className="flex items-center">
+//                 <FaGithub className="mr-2 text-gray-400" /> 
+//                 <span>External Integrations</span>
+//               </div>
+//             </CardTitle>
+//           </CardHeader>
+//           <CardContent>
+//             <div className="space-y-3">
+//               <Button variant="outline" className="w-full flex justify-between">
+//                 Connect GitHub
+//                 <FaGithub className="ml-2" />
+//               </Button>
+//               <Button variant="outline" className="w-full flex justify-between">
+//                 Sync LeetCode Profile
+//                 <FaChartLine className="ml-2" />
+//               </Button>
+//             </div>
+//           </CardContent>
+//         </Card>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default algoEaseDashboard;
+
+
+
+"use client"
+import React, { useState, useEffect } from 'react';
+import { 
+  Card, 
+  CardContent, 
+  CardHeader, 
+  CardTitle,
+  CardFooter
+} from "@/components/ui/card";
+
+import Link from 'next/link';
+
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogHeader, 
+  DialogTitle, 
+  DialogTrigger,
+  DialogDescription
+} from "@/components/ui/dialog";
+
+import { motion } from 'framer-motion';
+import { FaGithub, FaCode, FaChartLine } from 'react-icons/fa';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
-import { Moon, Sun, Book, Youtube, Code, Timer, Brain, Trophy, Target } from 'lucide-react';
-import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
-
-const AlgoEaseDashboard = () => {
-    const [isDarkMode, setIsDarkMode] = useState(false);
-
-    // Sample data - in real app, this would come from props or API
-    const progressData = {
-        overall: 65,
-        streak: 5,
-        problemsSolved: {
-            sorting: 12,
-            graphs: 8,
-            dp: 15
-        }
-    };
-    const complexityData = [
-        { n: 10, linear: 10, quadratic: 100, logarithmic: 3.32 },
-        { n: 20, linear: 20, quadratic: 400, logarithmic: 4.32 },
-        { n: 30, linear: 30, quadratic: 900, logarithmic: 4.91 }
-    ];
-    const learningPath = [
-        { title: "Sorting Fundamentals", status: "completed" },
-        { title: "Graph Algorithms", status: "in-progress" },
-        { title: "Dynamic Programming", status: "upcoming" }
-    ];
-    const words = `Welcome back to AlgoEase`;
-
-    return (
-        <div className={`min-h-screen p-6 ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-gray-50'}`}>
-            {/* Header Section */}
-            <div className="flex justify-between mb-6 h-28 items-center">
-                <h1 className="text-3xl font-bold"><TextGenerateEffect words={words} /></h1>
-                <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => setIsDarkMode(!isDarkMode)}
-                    className="rounded-full"
-                >
-                    {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-                </Button>
-            </div>
-
-            {/* Main Grid Layout */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+import { 
+  Moon, 
+  Sun, 
+  Target, 
+  Code, 
+  ExternalLink,
+  PlusCircle,
+  Calendar,
+  ChevronRight,
+  Trophy,
+  Fire,
+} from 'lucide-react';
+import { FaFire } from 'react-icons/fa';
+import { Star } from 'lucide-react';
+import { TrendingUp } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
+import { Users } from 'lucide-react';
+import { Settings } from 'lucide-react';
+import { CgProfile } from "react-icons/cg";
 
 
-                {/* Learning Path Card */}
-                <Card className="col-span-1 relative h-96">
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                            <Target className="h-5 w-5" />
-                            Your Personalised Learning Path
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="space-y-4">
-                            {learningPath.map((item, index) => (
-                                <div key={index} className="flex items-center gap-3">
-                                    <div className={`w-3 h-3 rounded-full ${item.status === 'completed' ? 'bg-green-500' :
-                                            item.status === 'in-progress' ? 'bg-blue-500' : 'bg-gray-300'
-                                        }`} />
-                                    <span>{item.title}</span>
-                                    <Badge variant="outline">{item.status}</Badge>
-                                </div>
-                            ))}
-                            <div className='absolute bottom-14 right-10'><Button>Explore!</Button></div>
+
+import { useSession, signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
+const algoEaseDashboard = () => {
+
+
+    const UserProfileDialog = () => (
+            <Dialog>
+              <DialogTrigger>
+                {/* <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-blue-700 transition-colors">
+                  {session.user?.name?.[0].toUpperCase()}
+                </div> */}
+                <CgProfile className='w-9 h-9' />
+
+              </DialogTrigger>
+              <DialogContent className={`${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white'}`}>
+                <DialogHeader>
+                  <DialogTitle>User Profile</DialogTitle>
+                  <DialogDescription>Manage your profile and settings</DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div className="flex items-center space-x-4">
+                    {/* <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white text-2xl">
+                      {session.user?.name?.[0].toUpperCase()}
+                    </div> */}
+                    <CgProfile className='w-9 h-9' />
+                    <div>
+                      <h2 className="text-xl font-bold">{session.user?.name}</h2>
+                      <p className="text-muted-foreground">{session.user?.email}</p>
+                    </div>
+                  </div>
+                  
+                  {/* Notification Settings moved here */}
+                  <div className="mt-4">
+                    <h3 className="text-lg font-semibold mb-3 flex items-center">
+                      <Settings className="mr-2" /> Notification Preferences
+                    </h3>
+                    <div className="space-y-3">
+                      {Object.entries(notificationSettings).map(([key, value]) => (
+                        <div key={key} className="flex justify-between items-center">
+                          <span>{key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}</span>
+                          <Button
+                            variant={value ? "default" : "outline"}
+                            onClick={() => setNotificationSettings(prev => ({
+                              ...prev,
+                              [key]: !value
+                            }))}
+                          >
+                            {value ? "Enabled" : "Disabled"}
+                          </Button>
                         </div>
-                    </CardContent>
-                </Card>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
+          );
 
-                {/* Recommendations Card */}
-                {/* <Card className="col-span-1">
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                            <Youtube className="h-5 w-5" />
-                            Recommended Resources
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <Tabs defaultValue="courses">
-                            <TabsList className="w-full">
-                                <TabsTrigger value="courses" className="w-full">Courses</TabsTrigger>
-                                <TabsTrigger value="videos" className="w-full">Videos</TabsTrigger>
-                            </TabsList>
-                            <TabsContent value="courses">
-                                <div className="space-y-2">
-                                    <div className="p-2 rounded-lg bg-secondary">
-                                        <div className="font-medium">Advanced Graph Algorithms</div>
-                                        <div className="text-sm text-muted-foreground">Perfect next step for your journey</div>
-                                    </div>
-                                </div>
-                            </TabsContent>
-                            <TabsContent value="videos">
-                                <div className="space-y-2">
-                                    <div className="p-2 rounded-lg bg-secondary">
-                                        <div className="font-medium">Understanding Dijkstra's Algorithm</div>
-                                        <div className="text-sm text-muted-foreground">By AlgoExpert</div>
-                                    </div>
-                                </div>
-                            </TabsContent>
-                        </Tabs>
-                    </CardContent>
-                </Card> */}
+    const mockLeaderboard = [
+        { name: "CodeNinja", points: 1250, rank: 1 },
+        { name: "AlgoMaster", points: 1100, rank: 2 },
+        { name: "DataWhiz", points: 1050, rank: 3 }
+      ];
+      
+      const mockRecommendations = [
+        { 
+          title: "Dynamic Programming Patterns", 
+          type: "Article", 
+          difficulty: "Advanced",
+          relevanceScore: 85
+        },
+        { 
+          title: "Graph Traversal Optimization", 
+          type: "Problem", 
+          difficulty: "Hard",
+          relevanceScore: 75
+        }
+      ];
+      
+      const mockAchievements = [
+        { 
+          title: "10 Hard Problems Solved", 
+          icon: <Trophy className="text-yellow-400" />,
+          description: "Mastered challenging algorithmic problems"
+        },
+        { 
+          title: "7-Day Learning Streak", 
+          icon: <FaFire className="text-orange-500" />,
+          description: "Consistent daily learning"
+        }
+      ];
+      
+  const [isDarkMode] = useState(true);
+  const [notificationSettings, setNotificationSettings] = useState({
+    dailyChallenge: true,
+    weeklyGoals: true,
+    newResources: true
+  });
 
-                {/* Complexity Visualizer Card */}
-                {/* <Card className="col-span-1">
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/login");
+    }
+  }, [status, router]);
+
+  if (status === "loading") return <p>Loading...</p>;
+  if (!session) return null;
+
+  // Sample data
+  const learningPath = [
+    { 
+      title: "Advanced Sorting Algorithms", 
+      progress: 65, 
+      difficulty: "Intermediate",
+      nextStep: "Implement QuickSort Optimization"
+    },
+    { 
+      title: "Graph Traversal Techniques", 
+      progress: 40, 
+      difficulty: "Advanced",
+      nextStep: "Study Dijkstra's Algorithm"
+    }
+  ];
+
+  const codeChallenges = [
+    {
+      title: "Implement Quick Sort",
+      difficulty: "Medium",
+      timeRemaining: "23:45:12",
+      points: 150
+    }
+  ];
+
+  const upcomingEvents = [
+    {
+      title: "DSA Hackathon",
+      date: "March 15, 2024",
+      type: "Competition"
+    },
+    {
+      title: "Advanced Algorithms Webinar",
+      date: "March 22, 2024",
+      type: "Workshop"
+    }
+  ];
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="min-h-screen bg-gray-900 text-white p-6"
+    >
+      {/* Header */}
+      <motion.header 
+        initial={{ y: -50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="flex justify-between items-center mb-8 pb-4 border-b border-gray-800 text-white"
+      >
+        <div className="flex items-center space-x-4">
+          <Link href='/'><Button>
+          <div className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+            AlgoEase
+          </div>
+          </Button></Link>
+          <h1 className="text-3xl">Dashboard</h1>
+        </div>
+        <div className="flex items-center space-x-4">
+           
+           <h1 className={`text-2xl font-bold ${isDarkMode ? 'text-blue-400' : 'text-blue-600'}`}>
+             Welcome, {session.user?.email}!
+           </h1>
+         </div>
+         
+        <div className="flex items-center space-x-4">
+        
+          {/* <Button 
+            variant="ghost"
+            className="text-gray-300 hover:text-white"
+            onClick={() => router.push('/profile')}
+          >
+            {session.user?.name}
+          </Button> */}
+          <Button 
+            variant="destructive" 
+            onClick={() => signOut()}
+            className="bg-blue-600 hover:bg-blue-700"
+          >
+            Logout
+          </Button>
+          <UserProfileDialog />
+        </div>
+      </motion.header>
+
+      {/* Dashboard Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 ">
+        
+        {/* Learning Path */}
+        <motion.div
+          initial={{ x: -50, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <Card className="bg-gray-800 border-gray-700 hover:border-blue-400 transition-all">
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <Target className="text-blue-400" />
+                  <span className='text-white'>Personalised Roadmap</span>
+                </div>
+                <Button 
+                  variant="ghost" 
+                  size="icon"
+                  onClick={() => router.push('/learning-path')}
+                >
+                  <ExternalLink className="text-gray-400 hover:text-blue-400" />
+                </Button>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {learningPath.map((path, index) => (
+                <div key={index} className="mb-4">
+                  <div className="flex justify-between mb-2 text-white">
+                    <span>{path.title}</span>
+                    <Badge variant="secondary">{path.difficulty}</Badge>
+                  </div>
+                  <Progress 
+                    value={path.progress} 
+                    className="bg-gray-600"
+                    // IntermediateClassName="bg-gradient-to-r from-blue-400 to-cyan-400"
+                    
+                  />
+                  
+                  <p className="text-sm text-gray-400 mt-2">
+                    Next Step: {path.nextStep}
+                  </p>
+                </div>
+              ))}
+            </CardContent>
+            <CardFooter>
+              <Button 
+                variant="outline" 
+                className="w-full border-blue-600 text-blue-500 hover:bg-blue-600/20 font-bold"
+                onClick={() => router.push('/learning-path')}
+              >
+                View Full Roadmap
+                <ChevronRight className="ml-2" />
+              </Button>
+            </CardFooter>
+          </Card>
+        </motion.div>
+
+        {/* Code Challenges */}
+        <motion.div
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
+          <Card className="bg-gray-800 border-gray-700 hover:border-green-400 transition-all">
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                <div className="flex items-center space-x-2 text-white">
+                  <Code className="text-green-400" />
+                  <span className='text-white'>Coding Challenges</span>
+                </div>
+                <Button 
+                  variant="ghost" 
+                  size="icon"
+                  onClick={() => router.push('/challenges')}
+                >
+                  <ExternalLink className="text-gray-400 hover:text-green-400" />
+                </Button>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {codeChallenges.map((challenge, index) => (
+                <div key={index} className="space-y-3 ">
+                  <h3 className='text-white'>{challenge.title}</h3>
+                  <div className="flex justify-between">
+                    <Badge variant="secondary">{challenge.difficulty}</Badge>
+                    <Badge className="bg-green-800 text-green-300">{challenge.timeRemaining}</Badge>
+                  </div>
+                  <Button 
+                    className="w-full bg-green-600 hover:bg-green-700"
+                    onClick={() => router.push('/challenge/quick-sort')}
+                  >
+                    Start Challenge
+                  </Button>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        {/* Leaderboard & Streak Tracking */}
+      <motion.div
+        initial={{ x: -50, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.7 }}
+      >
+        <Card className="bg-gray-800 border-gray-700 hover:border-yellow-400 transition-all">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Timer className="h-5 w-5" />
-              Time Complexity Visualization
+            <CardTitle className="flex items-center space-x-2">
+              <Trophy className="text-yellow-400" />
+              <span className='text-white'>Leaderboard</span>
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <LineChart width={300} height={200} data={complexityData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="n" />
-              <YAxis />
-              <Tooltip />
-              <Line type="monotone" dataKey="linear" stroke="#8884d8" />
-              <Line type="monotone" dataKey="logarithmic" stroke="#82ca9d" />
-            </LineChart>
-          </CardContent>
-        </Card> */}
-
-                <Card className="col-span-1">
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                            <Timer className="h-5 w-5" />
-                            Code and Algorithm Analyzer
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        Add code to analyse and 
-                    </CardContent>
-                </Card>
-
-
-                {/* Daily Challenge Card */}
-                <Card className="col-span-1">
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                            <Code className="h-5 w-5" />
-                            Daily Challenge
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="space-y-4">
-                            <p>Implement Quick Sort Algorithm</p>
-                            <div className="flex gap-2">
-                                <Badge>Difficulty: Medium</Badge>
-                                <Badge variant="secondary">Time Left: 23:45:12</Badge>
-                            </div>
-                            <Button className="w-full">Start Challenge</Button>
-                        </div>
-                    </CardContent>
-                </Card>
-
-                {/* AI Doubt Solver Card */}
-                {/* <Card className="col-span-1">
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                            <Brain className="h-5 w-5" />
-                            AI Doubt Solver
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="space-y-4">
-                            <textarea
-                                className="w-full p-2 rounded-md border"
-                                placeholder="Ask any DSA related question..."
-                                rows={3}
-                            />
-                            <Button className="w-full">Get Help</Button>
-                        </div>
-                    </CardContent>
-                </Card> */}
-
-
-                {/* Progress Overview Card */}
-                <Card className="col-span-1">
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                            <Trophy className="h-5 w-5" />
-                            Progress Overview
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="space-y-4">
-                            <div>
-                                <div className="flex justify-between mb-2">
-                                    <span>Overall Progress</span>
-                                    <span>{progressData.overall}%</span>
-                                </div>
-                                <Progress value={progressData.overall} />
-                            </div>
-                            <div className="flex gap-2">
-                                <Badge variant="secondary">🔥 {progressData.streak} day streak</Badge>
-                                <Badge variant="secondary">Level: Intermediate</Badge>
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
+            <div className="space-y-3">
+              {mockLeaderboard.map((user, index) => (
+                <div 
+                  key={index} 
+                  className="flex justify-between items-center p-2 rounded hover:bg-gray-700 transition-colors"
+                >
+                  <div className="flex items-center space-x-2">
+                    <span className="font-bold text-yellow-300">#{user.rank}</span>
+                    <span className='font-bold text-yellow-300'>{user.name}</span>
+                  </div>
+                  <Badge className="bg-yellow-600 text-white">{user.points} pts</Badge>
+                </div>
+              ))}
             </div>
-            <Card className="col-span-1 absolute w-screen pr-6 bottom-0">
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                            <Brain className="h-5 w-5" />
-                            AI Doubt Solver
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="space-y-4">
-                            <textarea
-                                className="w-full p-2 rounded-md border"
-                                placeholder="Ask any DSA related question..."
-                                rows={3}
-                            />
-                            <Button className="w-full">Get Help</Button>
-                        </div>
-                    </CardContent>
-                </Card>
+          </CardContent>
+          <CardFooter>
+            <div className="w-full text-center">
+              <Badge variant="secondary">Your Rank: 12</Badge>
+            </div>
+          </CardFooter>
+        </Card>
+      </motion.div>
 
-        </div>
-    );
+        {/* Upcoming Events */}
+        <motion.div
+          initial={{ x: 50, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
+          <Card className="bg-gray-800 border-gray-700 hover:border-purple-400 transition-all">
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <Calendar className="text-purple-400" />
+                  <span className='text-white'>Upcoming Events</span>
+                </div>
+                <Button 
+                  variant="ghost" 
+                  size="icon"
+                  onClick={() => router.push('/events')}
+                >
+                  <ExternalLink className="text-gray-400 hover:text-purple-400" />
+                </Button>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {upcomingEvents.map((event, index) => (
+                <div 
+                  key={index} 
+                  className="flex justify-between items-center mb-3 p-2 rounded hover:bg-gray-700 transition-colors"
+                >
+                  <div>
+                    <h4 className='text-white'>{event.title}</h4>
+                    <p className="text-sm text-gray-300">{event.date}</p>
+                  </div>
+                  <Badge variant="outline" className="border-purple-600 text-purple-400">
+                    {event.type}
+                  </Badge>
+                </div>
+              ))}
+            </CardContent>
+            <CardFooter>
+              <Button 
+                variant="outline" 
+                className="w-full border-purple-600 text-purple-500 font-bold hover:bg-purple-600/20"
+                onClick={() => router.push('/events')}
+              >
+                View All Events
+                <ChevronRight className="ml-2" />
+              </Button>
+            </CardFooter>
+          </Card>
+        </motion.div>
+
+        
+
+      {/* Code Analyzer */}
+      <motion.div
+          initial={{ x: -50, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+        >
+          <Card className="bg-gray-800 border-gray-700 hover:border-cyan-400 transition-all">
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <FaCode className="text-cyan-400" />
+                  <span className='text-white'>Code Analyzer</span>
+                </div>
+                <Button 
+                  variant="ghost" 
+                  size="icon"
+                  onClick={() => router.push('/code-analyzer')}
+                >
+                  <ExternalLink className="text-gray-400 hover:text-cyan-400" />
+                </Button>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-300 font-bold mb-4">
+                Visualize and understand complex algorithms through animated explanations.
+              </p>
+              <Button 
+                className="w-full bg-cyan-600 hover:bg-cyan-700"
+                onClick={() => router.push('/code-analyzer')}
+              >
+                <PlusCircle className="mr-2" /> Analyze Algorithm
+              </Button>
+            </CardContent>
+          </Card>
+        </motion.div>
+      
+
+
+      {/* Achievements & Community */}
+      <motion.div
+        initial={{ x: 50, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.9 }}
+      >
+        <Card className="bg-gray-800 border-gray-700 hover:border-purple-400 transition-all">
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <TrendingUp className="text-purple-400" />
+              <span className='text-white'>Achievements & Community</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {/* Achievements */}
+              <div className="mb-4">
+                <h4 className="text-lg mb-2 flex items-center text-yellow-400">
+                  <Trophy className="mr-2 text-yellow-400" /> Recent Achievements
+                </h4>
+                {mockAchievements.map((achievement, index) => (
+                  <div 
+                    key={index} 
+                    className="flex items-center space-x-3 p-2 rounded hover:bg-gray-700 transition-colors text-white"
+                  >
+                    {achievement.icon}
+                    <div>
+                      <h5 className="font-medium">{achievement.title}</h5>
+                      <p className="text-sm text-gray-400">{achievement.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Community Actions */}
+              <div className="space-y-2">
+                <Button 
+                  variant="outline" 
+                  className="w-full border-purple-600 text-purple-500 font-bold hover:bg-purple-600/20 flex items-center"
+                >
+                  <MessageCircle className="mr-2" /> Discussion Forum
+                </Button>
+                <Button 
+                  variant="outline" 
+                  className="w-full border-purple-600 text-purple-500 font-bold hover:bg-purple-600/20 flex items-center"
+                >
+                  <Users className="mr-2" /> Pair Programming
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </motion.div>
+
+      </div>
+
+
+      {/* Additional Sections */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+        {/* AI Recommendations */}
+      <motion.div
+        initial={{ y: 50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.8 }}
+      >
+        <Card className="bg-gray-800 border-gray-700 hover:border-green-400 transition-all">
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <Star className="text-green-400" />
+              <span className='text-white'>AI Mentor Recommendations</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {mockRecommendations.map((rec, index) => (
+              <div 
+                key={index} 
+                className="mb-3 p-3 rounded bg-gray-700 hover:bg-gray-600 transition-colors"
+              >
+                <div className="flex justify-between items-center">
+                  <div>
+                    <h4 className="font-semibold text-white">{rec.title}</h4>
+                    <div className="flex space-x-2 mt-1">
+                      <Badge variant="secondary">{rec.type}</Badge>
+                      <Badge className="bg-green-800 text-green-300">{rec.difficulty}</Badge>
+                    </div>
+                  </div>
+                  <Badge className="bg-green-600 text-white">
+                    {rec.relevanceScore}%
+                  </Badge>
+                </div>
+              </div>
+            ))}
+          </CardContent>
+          <CardFooter>
+            <Button 
+              variant="outline" 
+              className="w-full border-green-600 text-green-600 font-bold hover:bg-green-600/20 "
+            >
+              View Full Recommendations
+            </Button>
+          </CardFooter>
+        </Card>
+      </motion.div>
+        
+
+        {/* External Integrations */}
+        <motion.div
+          initial={{ x: 50, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+        >
+          <Card className="bg-gray-800 border-gray-700 hover:border-gray-400 transition-all">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <FaGithub className="text-gray-400" />
+                <span className='text-white'>External Integrations</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                <Button 
+                  variant="outline" 
+                  className="w-full border-gray-600 text-black hover:bg-gray-700"
+                >
+                  Connect GitHub
+                  <FaGithub className="ml-2" />
+                </Button>
+                <Button 
+                  variant="outline" 
+                  className="w-full border-gray-600 text-black hover:bg-gray-700"
+                >
+                  Sync LeetCode Profile
+                  <FaChartLine className="ml-2" />
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      </div>
+    </motion.div>
+  );
 };
 
-export default AlgoEaseDashboard;
+export default algoEaseDashboard;

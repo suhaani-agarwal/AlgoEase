@@ -22,6 +22,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/login/page.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/login/page.js", "src/app/api/generate-roadmap/route.js", "src/lib/auth.js", "src/app/auth.ts", "src/app/api/auth/[...nextauth]/route.js", "src/app/api/auth/register/route.js", "src/app/api/auth/login/route.js"],
   "exclude": ["node_modules"]
 }
