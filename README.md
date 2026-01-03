@@ -289,8 +289,3 @@ When opening a PR, please include:
 If you’re unsure where to start, feel free to open a GitHub issue with your idea and we can discuss it.
 
 ---
-
-## License
-
-Choose and add a license here (for example MIT, Apache 2.0, etc.).  
-Until then, treat this code as “All rights reserved” by default.
