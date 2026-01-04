@@ -126,7 +126,7 @@ Create **both** `.env` (for Prisma CLI) and `.env.local` (for Next.js runtime) a
 DATABASE_URL="postgresql://USER:PASSWORD@HOST:5432/DBNAME?sslmode=require"
 ```
 
-Use the Postgres connection string from your provider (Supabase/Neon/local).  
+Use the Postgres connection string from your provider (Use Supabase).  
 It **must** start with `postgresql://` or `postgres://`.
 
 #### `.env.local`
@@ -135,7 +135,7 @@ It **must** start with `postgresql://` or `postgres://`.
 DATABASE_URL="postgresql://USER:PASSWORD@HOST:5432/DBNAME?sslmode=require"
 
 NEXTAUTH_URL="http://localhost:3000"
-NEXTAUTH_SECRET="some-long-random-string"
+NEXTAUTH_SECRET=""
 
 # Google Gemini
 GEMINI_API_KEY="your-gemini-api-key"
@@ -147,7 +147,6 @@ GOOGLE_CLIENT_SECRET="your-google-client-secret"
 # Optional: D-ID for video generation
 DID_API_KEY="your-d-id-api-key"
 
-# Legacy / unused by main flow, but present in code
 JWT_SECRET="some-jwt-secret"
 ```
 
