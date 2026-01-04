@@ -215,10 +215,10 @@ const HomePage = () => {
                   Your AI-powered learning companion for mastering Data Structures and Algorithms. Get structured guidance, visual learning, and real-time feedback.
                 </p>
                 <div className="flex space-x-4">
-                  <button className="bg-blue-600 px-8 py-3 rounded-lg font-medium hover:bg-blue-700 transition-all duration-200 transform hover:scale-105 flex items-center">
+                <Link href='/signup'><button className="bg-blue-600 px-8 py-3 rounded-lg font-medium hover:bg-blue-700 transition-all duration-200 transform hover:scale-105 flex items-center">
                     Start Free Trial
                     <ArrowRight className="ml-2 w-5 h-5" />
-                  </button>
+                  </button></Link>
                   <button className="border border-gray-600 px-8 py-3 rounded-lg font-medium hover:border-blue-400 transition-all duration-200 text-gray-300 hover:text-white">
                     Watch Demo
                   </button>
@@ -235,7 +235,7 @@ const HomePage = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-12 bg-gray-800">
+      {/* <section className="py-12 bg-gray-800">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
@@ -244,9 +244,13 @@ const HomePage = () => {
                 <div className="text-gray-400">{stat.label}</div>
               </div>
             ))}
+            
           </div>
         </div>
-      </section>
+      </section> */}
+      
+      
+
 
       {/* Features Section */}
       <section className="py-20" id="features">
@@ -271,8 +275,36 @@ const HomePage = () => {
         </div>
       </section>
 
+
+      <section className="py-20 bg-gray-800" id="how-it-works">
+  <div className="container mx-auto px-4">
+    <h2 className="text-3xl font-bold text-center mb-12 bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+      How It Works
+    </h2>
+    <div className="grid md:grid-cols-4 gap-8">
+      <div className="bg-gray-900 p-6 rounded-lg text-center">
+        <h3 className="text-xl font-semibold mb-4">Step 1: Sign Up</h3>
+        <p className="text-gray-400">Create an account and get access to a personalised roadmap tailored according to your needs and interests.</p>
+      </div>
+      <div className="bg-gray-900 p-6 rounded-lg text-center">
+        <h3 className="text-xl font-semibold mb-4">Step 2: Learn and Practice</h3>
+        <p className="text-gray-400">Follow structured lessons, visualize concepts, and complete exercises to enhance your skills.</p>
+      </div>
+      <div className="bg-gray-900 p-6 rounded-lg text-center">
+        <h3 className="text-xl font-semibold mb-4">Step 3: Analyse your code</h3>
+        <p className="text-gray-400">Use our code analyser for easy explanation, time and space complexity analysis, optimisation techniques and some edge test-cases!</p>
+      </div>
+      <div className="bg-gray-900 p-6 rounded-lg text-center">
+        <h3 className="text-xl font-semibold mb-4">Step 4: Get Feedback</h3>
+        <p className="text-gray-400">Receive real-time feedback and track your progress to ensure continuous improvement.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
       {/* Testimonials Section */}
-      <section className="py-20 bg-gray-800" id="testimonials">
+      {/* <section className="py-20 bg-gray-800" id="testimonials">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12 bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
             What Our Users Say
@@ -302,7 +334,26 @@ const HomePage = () => {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
+
+<section className="py-20 bg-gray-800" id="faq">
+  <div className="container mx-auto px-4">
+    <h2 className="text-3xl font-bold text-center mb-12 bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+      Frequently Asked Questions
+    </h2>
+    <div className="space-y-8">
+      <div className="bg-gray-900 p-6 rounded-lg">
+        <h3 className="font-semibold text-white mb-2">What is AlgoEase?</h3>
+        <p className="text-gray-400">AlgoEase is an AI-powered learning platform designed to help you master Data Structures and Algorithms through structured guidance, visual learning, and real-time feedback.</p>
+      </div>
+      <div className="bg-gray-900 p-6 rounded-lg">
+        <h3 className="font-semibold text-white mb-2">How does the free trial work?</h3>
+        <p className="text-gray-400">The free trial gives you access to select lessons and features. You can explore the platform before committing to a full subscription.</p>
+      </div>
+      {/* Add more FAQs */}
+    </div>
+  </div>
+</section>
 
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-blue-600 to-cyan-600">

@@ -70,27 +70,32 @@ import { db } from "@/lib/db";
 import { hash } from "bcrypt";
 import * as z from "zod";
 
-// Updated schema to include experience_level, interests, and pace
 const userSchema = z.object({
   username: z.string().min(1, "Username is required").max(100),
   email: z.string().min(1, "Email is required ").email("Invalid email"),
   password: z.string().min(8, "Password must have at least 8 characters"),
-  level:z.string().min(1, "Experience level is required"), 
+  level: z.string().min(1, "Experience level is required"),
   goals: z.array(z.string()).nonempty("At least one goal is required"),
-  learningStyle: z.string().min(1, "Learning style is required"), 
+  learningStyle: z.string().min(1, "Learning style is required"),
   timeCommitment: z.string().min(1, "Time commitment is required"),
-  experienceLevel: z.string().min(1, "Experience level is required"), 
-  
+  experienceLevel: z.string().min(1, "Experience level is required"),
 });
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    
-    // Parse new fields
-    const { email, username, password,level,goals,learningStyle,timeCommitment, experienceLevel, } = userSchema.parse(body);
 
-    // Check if email already exists
+    const {
+      email,
+      username,
+      password,
+      level,
+      goals,
+      learningStyle,
+      timeCommitment,
+      experienceLevel,
+    } = userSchema.parse(body);
+
     const existingUserByEmail = await db.user.findUnique({
       where: { email },
     });
@@ -101,36 +106,32 @@ export async function POST(req: Request) {
       );
     }
 
-    // Check if username already exists
     const existingUserByUsername = await db.user.findUnique({
       where: { username },
     });
     if (existingUserByUsername) {
       return NextResponse.json(
         { user: null, message: "User with this username already exists" },
-        { status: 410 }
+        { status: 409 }
       );
     }
 
-    // Hash password
     const hashPassword = await hash(password, 10);
 
-    // Store user in DB with new fields
     const newUser = await db.user.create({
       data: {
         username,
         email,
         password: hashPassword,
-        level:level,
-        goals:goals, 
-        learningStyle:learningStyle,
-        experienceLevel:experienceLevel,
-        timeCommitment:timeCommitment
+        level,
+        goals,
+        learningStyle,
+        experienceLevel,
+        timeCommitment,
       },
     });
 
-    // Exclude password from response
-    const { password: newUserPassword, ...rest } = newUser;
+    const { password: _password, ...rest } = newUser;
 
     return NextResponse.json(
       { user: rest, message: "User created successfully!" },

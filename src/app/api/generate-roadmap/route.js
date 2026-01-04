@@ -4,22 +4,17 @@
 // /api/generate-roadmap/route.js
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import * as dotenv from "dotenv";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { NextRequest } from "next/server";
-
-
-dotenv.config();
 
 console.log("Hello! This is the generate-roadmap route page.");
 
-const apiKey = "AIzaSyAiQJVjerSMjRLOYal8vIQJfXmwm6uEgXc"; // Fetch API key from environment variables
+const apiKey = process.env.GEMINI_API_KEY;
 if (!apiKey) {
   throw new Error("GEMINI_API_KEY is missing from environment variables.");
 }
 
 const genAI = new GoogleGenerativeAI(apiKey);
-const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
+const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
 
 const generationConfig = {
   temperature: 1,

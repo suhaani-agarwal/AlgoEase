@@ -17,8 +17,8 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json({ message: "User is available." }, { status: 200 });
-  } catch (error) {
-    console.error("Error checking user:", error);
+  } catch {
+    // Avoid re-throwing/logging issues here; just return a generic error.
     return NextResponse.json(
       { message: "Something went wrong while checking user!" },
       { status: 500 }
